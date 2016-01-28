@@ -104,3 +104,26 @@ router.get('/random' , function(req , res){
     });
   });
 });
+
+//adds a review
+router.post('/review' , function(req , res){
+  console.log('creating a review');
+  var review = req.body.review;
+  var punID = req.body.id;
+  var name = req.body.name;
+  Review.create({'review':review ,'punID':punID,'name':name} , function(err , result){
+    if(err) {
+      res.status(500).json({error:"error creating review"});
+      console.log(err);
+    }
+    res.status(200).json({message:"Review created" , review:result});
+  });
+});
+
+//get all reviews for a certain post
+router.get('/readreviews' , function(req , res){
+  var id = req.query.id;
+  Review.find({"punID":id}).exec(function(err , result){
+    res.status(200).json({reviews:result});
+  });
+});
