@@ -105,6 +105,21 @@ router.get('/random' , function(req , res){
   });
 });
 
+//get all puns containing a certain tag
+//NEEDS WORK CURRENTLY BROKEN AAAAAAAHHHH
+router.get('/byTag' , function(req , res){
+  console.log('getting puns with ' + req.query.tag + ' tag');
+  var tag = req.query.tag;
+  Pun.find({'tags':tag}).exec(function(err , result){
+    if(result) {
+      res.status(200).json({'puns':result});
+    }
+    else res.status(500).json({'error':'not found'});
+  });
+});
+
+
+
 //adds a review
 router.post('/review' , function(req , res){
   console.log('creating a review');
@@ -125,5 +140,20 @@ router.get('/readreviews' , function(req , res){
   var id = req.query.id;
   Review.find({"punID":id}).exec(function(err , result){
     res.status(200).json({reviews:result});
+  });
+});
+
+//vote on a pun
+router.put('/vote' , function(req , res){
+  console.log('getting a vote: ' + req.body.rating);
+  var punID = req.body.id;
+  var rating = req.body.rating;
+  Pun.update({id:punID},{$inc:{totalStars:rating,totalReviews:1}} , function(err , result){
+    if(err) {
+      res.status(500).json({error:"server error"});
+    }
+    else {
+      res.status(200).json({message:'reveiw subitted'});
+    }
   });
 });
