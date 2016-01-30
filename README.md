@@ -54,6 +54,6 @@ _body key/values_
 * rating: your vote on how good the pun is. should be an an integer on (1,5).  
 
 _russell stewart and sarah levy_  
-_advanced topics computer science 2016_
-_web api/database project_
+_advanced topics computer science 2016_  
+_web api/database project_  
 _what do you call an elephant pun that doesn't belong at the end of a README? irrelephant!!!_
