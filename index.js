@@ -106,7 +106,7 @@ router.get('/random' , function(req , res){
 });
 
 //get all puns containing a certain tag
-router.get('/byTag' , function(req , res){
+router.get('/bytag' , function(req , res){
   console.log('getting puns with ' + req.query.tag + ' tag');
   var tag = req.query.tag;
   var results = [];
