@@ -106,19 +106,33 @@ router.get('/random' , function(req , res){
 });
 
 //get all puns containing a certain tag
-//NEEDS WORK CURRENTLY BROKEN AAAAAAAHHHH
 router.get('/byTag' , function(req , res){
   console.log('getting puns with ' + req.query.tag + ' tag');
   var tag = req.query.tag;
-  Pun.find({'tags':tag}).exec(function(err , result){
-    if(result) {
-      res.status(200).json({'puns':result});
+  var results = [];
+  Pun.find({}).sort({'id':1}).exec(function(err , result){
+    var hasFinished = false;
+    for(var i = 0 ; i < result.length ; i++) {
+      if(result[i].tags.indexOf(tag) >= 0) results += result[i];
+      if(i==result.length - 1) hasFinished = true;
     }
-    else res.status(500).json({'error':'not found'});
+    do {
+      if(hasFinished) {
+        if(results.length>0) res.status(200).json({puns:results});
+        else res.status(404).json({error:'not found'});
+      }
+    }while(!hasFinished);
   });
 });
 
+//gets the top rated puns
+//CURRENTLY BROKEN
+router.get('/best' , function(req , res){
+  console.log('getting best puns');
+  Pun.find({}).exec(function(err, result){
 
+  });
+});
 
 //adds a review
 router.post('/review' , function(req , res){

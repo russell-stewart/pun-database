@@ -6,7 +6,7 @@ var PunSchema = new Schema({
   tags: String,
   totalStars: Number,
   totalReviews: Number,
-  id: Number
+  id: Number,
 });
 
 var Pun = mongoose.model('Pun' , PunSchema);
