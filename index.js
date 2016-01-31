@@ -126,11 +126,30 @@ router.get('/bytag' , function(req , res){
 });
 
 //gets the top rated puns
-//CURRENTLY BROKEN
 router.get('/best' , function(req , res){
   console.log('getting best puns');
-  Pun.find({}).exec(function(err, result){
+  updateStars();
+  Pun.find({}).sort({'stars':-1}).exec(function(err , result) {
+    if(err) {
+      res.status(500).json({error:'server error'});
+    }
+    else {
+      res.status(200).json({message:'success',puns:result});
+    }
+  });
+});
 
+//gets the worst puns
+router.get('/worst' , function(req , res){
+  console.log('getting worst puns');
+  updateStars();
+  Pun.find({}).sort({'stars':1}).exec(function(err , result) {
+    if(err) {
+      res.status(500).json({error:'server error'});
+    }
+    else {
+      res.status(200).json({message:'success',puns:result});
+    }
   });
 });
 
@@ -162,12 +181,41 @@ router.put('/vote' , function(req , res){
   console.log('getting a vote: ' + req.body.rating);
   var punID = req.body.id;
   var rating = req.body.rating;
+  if(rating > 5) rating = 5;
   Pun.update({id:punID},{$inc:{totalStars:rating,totalReviews:1}} , function(err , result){
     if(err) {
       res.status(500).json({error:"server error"});
     }
     else {
+      updateStars();
       res.status(200).json({message:'reveiw subitted'});
     }
   });
 });
+
+function updateStars() {
+  console.log('updating stars');
+  Pun.find({}).exec(function(err , result) {
+    for(var i = 0 ; i < result.length ; i++) {
+      var thisID = result[i].id;
+      var thisStars;
+      if(result[i].totalReviews != 0) {
+        thisStars = result[i].totalStars / result[i].totalReviews;
+        Pun.update({id:thisID},{stars:thisStars},function(err , result) {
+          if(err) {
+            res.status(500).json({error:"server error"});
+            console.log('update stars error 1');
+          }
+        });
+      }
+      else {
+        Pun.update({id:thisID},{stars:0},function(err , result) {
+          if(err) {
+            res.status(500).json({error:"server error"});
+            console.log('update stars error 2');
+          }
+        });
+      }
+    }
+  });
+}

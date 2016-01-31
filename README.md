@@ -22,12 +22,15 @@ to visit the api when it's set up, go to:
 
   * tag: the tag (topic) of the pun you're searching for  
 
-###5. /best  
-  _in development. not implemented._  
+###5. /best   
   gets all puns, sorted by their rating, best first.  
-###6. /worst  
-_in development. not implemented._  
-gets all puns, sorted by their rating, worst first. if you're into that kinda stuff.  
+###6. /worst    
+  gets all puns, sorted by their rating, worst first. if you're into that kinda stuff.  
+###7. /readreviews  
+  read all reviews for a single pun if you know its id  
+  _body keys/values_  
+
+  * id: the id of the pun you're searching for  
 
 ##api POST endpoints  
 ###1. /newpun  
