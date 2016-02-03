@@ -6,7 +6,7 @@ to visit the api when it's set up, go to:
 (host ip address):```8001/pun-database```
 
 ##api ```GET``` endpoints  
-###1. /   
+###1. ```/```   
   the home address for the api. It says welcome, but doesn't do much else.
 ###2. ```/byid```  
   get a pun based on its unique tracking id (an integer)  
